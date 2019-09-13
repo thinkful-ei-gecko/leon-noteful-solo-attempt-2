@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import FolderList from './FolderList'
 import NotesList from './NotesList'
+import FolderExpandedView from './FolderExpandedView'
+import NoteExpandedView from './NoteExpandedView'
 import {Route, Link} from 'react-router-dom'
 
 class App extends React.Component {
@@ -41,7 +43,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <Link to="/"><h1>Noteful</h1></Link>
@@ -53,23 +54,26 @@ class App extends React.Component {
         <Route path ="/folder/:folderId" 
           render={(matchProps) =>
             <FolderList folders={this.state.folders} matchProps={matchProps} />
-          } 
-        />
+          }         />
         <Route path ="/note/:noteId" 
           render={(matchProps) =>
-            <FolderList folders={this.state.folders} matchProps={matchProps} />
+            <FolderExpandedView folders={this.state.folders} notes={this.state.notes} matchProps={matchProps} />
           } 
         />
 
 
         <Route exact path ="/" 
-          render={() =>
-            <NotesList notes={this.state.notes} />
+          render={(matchProps) =>
+            <NotesList notes={this.state.notes} matchProps={matchProps} folders={this.state.folders} />
           }
         />
-          <Route path ="/note/:noteId" 
-          render={() =>
-            <NotesList notes={this.state.notes} />
+        <Route path ="/folder/:folderId" 
+          render={(matchProps) =>
+            <NotesList notes={this.state.notes} matchProps={matchProps} folders={this.state.folders} />
+          }         />
+        <Route path ="/note/:noteId" 
+          render={(matchProps) =>
+            <NoteExpandedView notes={this.state.notes} matchProps={matchProps} />
           } 
         />
       </div>
